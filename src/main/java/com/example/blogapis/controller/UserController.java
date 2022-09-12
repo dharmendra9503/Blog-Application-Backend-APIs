@@ -20,27 +20,27 @@ public class UserController {
         return "Welcome to Blog Application APIs";
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/user")
     public UserDataTransfer createUser(@Valid @RequestBody UserDataTransfer userDTO){
         return userService.createUser(userDTO);
     }
 
-    @GetMapping("/getUsers")
+    @GetMapping("/users")
     public List<UserDataTransfer> getAllUser(){
         return userService.getAllUsers();
     }
 
-    @GetMapping("/getUser/{userId}")
+    @GetMapping("/user/{userId}")
     public UserDataTransfer getAllUser(@PathVariable Integer userId){
         return userService.getUser(userId);
     }
 
-    @PutMapping("/updateUser/{userId}")
+    @PutMapping("/user/{userId}")
     public UserDataTransfer updateUser(@Valid @RequestBody UserDataTransfer userDTO, @PathVariable Integer userId){
         return userService.updateUser(userDTO, userId);
     }
 
-    @DeleteMapping("deleteUser/{userId}")
+    @DeleteMapping("user/{userId}")
     public String deleteUser(@PathVariable Integer userId){
         userService.deleteUser(userId);
 
