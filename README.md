@@ -3,8 +3,8 @@ This repository contains Blog  Application Backend. This application created in 
 
 APIs:
 
-User API: We can add user, delete user, update user, get all user, get user by id.
+User API: User can add user, delete user, update user, get all user, get user by id.
 
-Category API: can add category, delete category, update category, get all category.
+Category API: User can add category, delete category, update category, get all category.
 
-Poat API:
+Poat API: User can add post, delete post, update post, get all post, get category wise post.
