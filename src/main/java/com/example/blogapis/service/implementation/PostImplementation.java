@@ -11,6 +11,9 @@ import com.example.blogapis.repository.UserRepository;
 import com.example.blogapis.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -70,8 +73,11 @@ public class PostImplementation implements PostService {
     }
 
     @Override
-    public List<PostDataTransfer> getAllPost() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDataTransfer> getAllPost(Integer pageNumber, Integer pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Post> pagePost  = postRepository.findAll(pageable);
+        List<Post> posts = pagePost.getContent();
 
         return posts.stream().map((post) -> modelMapper.map(post, PostDataTransfer.class)).toList();
     }

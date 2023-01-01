@@ -39,9 +39,12 @@ public class PostController {
     }
 
     //get all post
-    @GetMapping("/post")
-    public ResponseEntity<List<PostDataTransfer>> getAllPost(){
-        return new ResponseEntity<>(postService.getAllPost(), HttpStatus.OK);
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostDataTransfer>> getAllPost(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+        ){
+        return new ResponseEntity<>(postService.getAllPost(pageNumber, pageSize), HttpStatus.OK);
     }
 
     //get post by id

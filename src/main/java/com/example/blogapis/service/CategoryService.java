@@ -1,7 +1,6 @@
 package com.example.blogapis.service;
 
 import com.example.blogapis.payloads.CategoryDataTransfer;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -14,7 +13,6 @@ public interface CategoryService {
     List<CategoryDataTransfer> getAllCategory();
 
     //get
-
     CategoryDataTransfer getCategory(Integer categoryId);
 
     //update
@@ -22,4 +20,5 @@ public interface CategoryService {
 
     //delete
     void deleteCategory(Integer categoryId);
+
 }
