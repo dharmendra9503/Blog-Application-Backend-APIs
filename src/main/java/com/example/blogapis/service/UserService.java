@@ -1,6 +1,7 @@
 package com.example.blogapis.service;
 
 import com.example.blogapis.payloads.UserDataTransfer;
+import com.example.blogapis.payloads.UserResponse;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface UserService {
 
     UserDataTransfer createUser(UserDataTransfer userDTO);
 
-    List<UserDataTransfer> getAllUsers();
+    UserResponse getAllUsers(Integer pageNumber, Integer pageSize);
 
     UserDataTransfer getUser(Integer userId);
 

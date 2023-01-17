@@ -3,10 +3,14 @@ package com.example.blogapis.service.implementation;
 import com.example.blogapis.exception.ResourceNotFoundException;
 import com.example.blogapis.model.User;
 import com.example.blogapis.payloads.UserDataTransfer;
+import com.example.blogapis.payloads.UserResponse;
 import com.example.blogapis.repository.UserRepository;
 import com.example.blogapis.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,11 +41,25 @@ public class UserImplementation implements UserService {
     }
 
     @Override
-    public List<UserDataTransfer> getAllUsers() {
-        List<User> users = userRepository.findAll();
+    public UserResponse getAllUsers(Integer pageNumber, Integer pageSize) {
 
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> userPage = userRepository.findAll(pageable);
+        List<User> users = userPage.getContent();
+
+//        List<UserDataTransfer> userDTO = users.stream().map(user -> user_to_userDataTransfer(user)).toList();
+        List<UserDataTransfer> userDTO = users.stream().map(user -> modelMapper.map(user, UserDataTransfer.class)).toList();
 //        users.stream().map(this::user_to_userDataTransfer).toList();       //We can also use this
-        return users.stream().map(user -> user_to_userDataTransfer(user)).toList();
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setContent(userDTO);
+        userResponse.setPageNumber(userPage.getNumber());
+        userResponse.setPageSize(userPage.getSize());
+        userResponse.setTotalPages(userPage.getTotalPages());
+        userResponse.setTotalElements(userPage.getTotalElements());
+        userResponse.setLastPage(userPage.isLast());
+
+        return userResponse;
     }
 
     @Override

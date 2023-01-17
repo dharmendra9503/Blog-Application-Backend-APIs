@@ -1,15 +1,18 @@
 package com.example.blogapis.controller;
 
 import com.example.blogapis.payloads.UserDataTransfer;
+import com.example.blogapis.payloads.UserResponse;
 import com.example.blogapis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/API")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -26,8 +29,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<UserDataTransfer> getAllUser(){
-        return userService.getAllUsers();
+    public ResponseEntity<UserResponse> getAllUser(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+    ){
+
+        return new ResponseEntity<>(userService.getAllUsers(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}")

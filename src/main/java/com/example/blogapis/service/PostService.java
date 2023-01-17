@@ -1,7 +1,7 @@
 package com.example.blogapis.service;
 
-import com.example.blogapis.model.Post;
 import com.example.blogapis.payloads.PostDataTransfer;
+import com.example.blogapis.payloads.PostResponse;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface PostService {
     void deletePost(Integer postId);
 
     //get all post
-    List<PostDataTransfer> getAllPost(Integer pageNumber, Integer  pageSize);
+    PostResponse getAllPost(Integer pageNumber, Integer  pageSize);
 
     //get single post
     PostDataTransfer getPostById(Integer postId);

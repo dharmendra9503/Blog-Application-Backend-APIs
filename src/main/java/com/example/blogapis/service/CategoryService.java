@@ -1,6 +1,7 @@
 package com.example.blogapis.service;
 
 import com.example.blogapis.payloads.CategoryDataTransfer;
+import com.example.blogapis.payloads.CategoryResponse;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface CategoryService {
     CategoryDataTransfer createCategory(CategoryDataTransfer categoryDTO);
 
     //get all
-    List<CategoryDataTransfer> getAllCategory();
+    CategoryResponse getAllCategory(Integer pageNumber, Integer pageSize);
 
     //get
     CategoryDataTransfer getCategory(Integer categoryId);

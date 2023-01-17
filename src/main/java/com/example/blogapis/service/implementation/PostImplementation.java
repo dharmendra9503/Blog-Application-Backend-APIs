@@ -5,6 +5,7 @@ import com.example.blogapis.model.Category;
 import com.example.blogapis.model.Post;
 import com.example.blogapis.model.User;
 import com.example.blogapis.payloads.PostDataTransfer;
+import com.example.blogapis.payloads.PostResponse;
 import com.example.blogapis.repository.CategoryRepository;
 import com.example.blogapis.repository.PostRepository;
 import com.example.blogapis.repository.UserRepository;
@@ -38,8 +39,10 @@ public class PostImplementation implements PostService {
     @Override
     public PostDataTransfer createPost(PostDataTransfer postDTO, Integer userId, Integer categoryId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User Id", userId));
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "Category Id", categoryId));
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new ResourceNotFoundException("User", "User Id", userId));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("Category", "Category Id", categoryId));
 
         Post post = modelMapper.map(postDTO, Post.class);
         post.setImageName("default.png");
@@ -56,7 +59,8 @@ public class PostImplementation implements PostService {
 
     @Override
     public PostDataTransfer updatePost(PostDataTransfer postDTO, Integer postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new ResourceNotFoundException("Post", "Post Id", postId));
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
         post.setImageName(postDTO.getImageName());
@@ -68,29 +72,43 @@ public class PostImplementation implements PostService {
 
     @Override
     public void deletePost(Integer postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new ResourceNotFoundException("Post", "Post Id", postId));
         postRepository.delete(post);
     }
 
     @Override
-    public List<PostDataTransfer> getAllPost(Integer pageNumber, Integer pageSize) {
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize) {
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Post> pagePost  = postRepository.findAll(pageable);
         List<Post> posts = pagePost.getContent();
 
-        return posts.stream().map((post) -> modelMapper.map(post, PostDataTransfer.class)).toList();
+        List<PostDataTransfer> postDTO = posts.stream().map((post) -> modelMapper.map(post, PostDataTransfer.class))
+                .toList();
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDTO);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+
+        return postResponse;
     }
 
     @Override
     public PostDataTransfer getPostById(Integer postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new ResourceNotFoundException("Post", "Post Id", postId));
         return modelMapper.map(post, PostDataTransfer.class);
     }
 
     @Override
     public List<PostDataTransfer> getAllPostByCategory(Integer categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "Category Id", categoryId));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new ResourceNotFoundException("Category", "Category Id", categoryId));
         List<Post> posts = postRepository.findByCategory(category);
 
         return posts.stream().map((post) -> modelMapper.map(post, PostDataTransfer.class)).toList();
@@ -98,7 +116,8 @@ public class PostImplementation implements PostService {
 
     @Override
     public List<PostDataTransfer> getAllPostByUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User Id", userId));
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new ResourceNotFoundException("User", "User Id", userId));
         List<Post> posts = postRepository.findByUser(user);
 
         return posts.stream().map((post) -> modelMapper.map(post, PostDataTransfer.class)).toList();

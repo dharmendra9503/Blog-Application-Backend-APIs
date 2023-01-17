@@ -1,6 +1,7 @@
 package com.example.blogapis.controller;
 
 import com.example.blogapis.payloads.CategoryDataTransfer;
+import com.example.blogapis.payloads.CategoryResponse;
 import com.example.blogapis.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +12,18 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/API")
+@RequestMapping("/api")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/categories")
-    public List<CategoryDataTransfer> getAllCategory(){
-        return categoryService.getAllCategory();
+    public ResponseEntity<CategoryResponse> getAllCategory(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+    ){
+        return new ResponseEntity<>(categoryService.getAllCategory(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/category/{id}")
@@ -35,7 +39,8 @@ public class CategoryController {
     }
 
     @PutMapping("/category/{id}")
-    public ResponseEntity<CategoryDataTransfer> updateCategory(@Valid @RequestBody CategoryDataTransfer categoryDTO, @PathVariable Integer id){
+    public ResponseEntity<CategoryDataTransfer> updateCategory(
+            @Valid @RequestBody CategoryDataTransfer categoryDTO, @PathVariable Integer id){
         CategoryDataTransfer updated = categoryService.updateCategory(categoryDTO, id);
 
         return new ResponseEntity<>(updated, HttpStatus.CREATED);

@@ -2,6 +2,7 @@ package com.example.blogapis.controller;
 
 import com.example.blogapis.payloads.ApiResponce;
 import com.example.blogapis.payloads.PostDataTransfer;
+import com.example.blogapis.payloads.PostResponse;
 import com.example.blogapis.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/API")
+@RequestMapping("/api")
 public class PostController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class PostController {
 
     //get all post
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDataTransfer>> getAllPost(
+    public ResponseEntity<PostResponse> getAllPost(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
         ){
@@ -55,7 +56,8 @@ public class PostController {
 
     //update post
     @PutMapping("/post/{postId}")
-    public ResponseEntity<PostDataTransfer> updatePost(@RequestBody PostDataTransfer postDTO, @PathVariable Integer postId){
+    public ResponseEntity<PostDataTransfer> updatePost(@RequestBody PostDataTransfer postDTO,
+                                                        @PathVariable Integer postId){
 
         return new ResponseEntity<>(postService.updatePost(postDTO, postId), HttpStatus.OK);
 
