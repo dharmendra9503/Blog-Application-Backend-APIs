@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -21,9 +20,12 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity<CategoryResponse> getAllCategory(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "categoryId", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
     ){
-        return new ResponseEntity<>(categoryService.getAllCategory(pageNumber, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(
+                categoryService.getAllCategory(pageNumber, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     @GetMapping("/category/{id}")

@@ -3,15 +3,13 @@ package com.example.blogapis.service;
 import com.example.blogapis.payloads.CategoryDataTransfer;
 import com.example.blogapis.payloads.CategoryResponse;
 
-import java.util.List;
-
 public interface CategoryService {
 
     //create
     CategoryDataTransfer createCategory(CategoryDataTransfer categoryDTO);
 
     //get all
-    CategoryResponse getAllCategory(Integer pageNumber, Integer pageSize);
+    CategoryResponse getAllCategory(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     //get
     CategoryDataTransfer getCategory(Integer categoryId);
