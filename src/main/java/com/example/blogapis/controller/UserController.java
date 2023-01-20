@@ -1,5 +1,6 @@
 package com.example.blogapis.controller;
 
+import com.example.blogapis.config.AppConstants;
 import com.example.blogapis.payloads.UserDataTransfer;
 import com.example.blogapis.payloads.UserResponse;
 import com.example.blogapis.service.UserService;
@@ -30,8 +31,10 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<UserResponse> getAllUser(
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)
+            Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false)
+            Integer pageSize
     ){
 
         return new ResponseEntity<>(userService.getAllUsers(pageNumber, pageSize), HttpStatus.OK);
