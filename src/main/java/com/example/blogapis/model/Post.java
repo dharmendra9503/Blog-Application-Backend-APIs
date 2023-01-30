@@ -26,6 +26,9 @@ public class Post {
     @ManyToOne
     private User user;
 
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private ImageData imageData;
+
 
     public Integer getPostId() {
         return postId;
